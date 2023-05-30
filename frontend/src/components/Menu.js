@@ -20,7 +20,7 @@ import SettingsBrightnessOutlined from "@mui/icons-material/SettingsBrightnessOu
 
 const Container = styled.div`
   flex: 1;
-  background-color: ${({ theme }) => theme.bg};
+  background-color: ${({ theme }) => theme.bgLighter};
   color: ${({ theme }) => theme.text};
   height: 100vh;
   font-size: 14px;
@@ -153,6 +153,8 @@ const Menu = ({ darkMode, setDarkMode }) => {
           <HelpOutlineOutlined />
           Help
         </Item>
+
+        {/* When click ==> toogle darkMode */}
         <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlined />
           Light Mode

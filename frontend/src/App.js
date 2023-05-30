@@ -16,6 +16,7 @@ const Main = styled.div`
 
 const Wrapper = styled.div``;
 function App() {
+  // Set initial theme, default darkMode === true
   const [darkMode, setDarkMode] = useState(true);
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -25,79 +26,7 @@ function App() {
         {/* Main */}
         <Main>
           <Navbar />
-          <Wrapper>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-            <h1>TEST</h1>
-          </Wrapper>
+          <Wrapper></Wrapper>
         </Main>
       </Container>
     </ThemeProvider>
