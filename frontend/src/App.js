@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar";
 import { darkTheme, lightTheme } from "./utils/Theme";
 import { light } from "@mui/material/styles/createPalette";
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Video from "./pages/Video";
 
 const Container = styled.div`
   display: flex;
@@ -21,13 +24,24 @@ function App() {
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Container>
-        {/* Menu */}
-        <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
-        {/* Main */}
-        <Main>
-          <Navbar />
-          <Wrapper></Wrapper>
-        </Main>
+        <BrowserRouter>
+          {/* Menu */}
+          <Menu darkMode={darkMode} setDarkMode={setDarkMode} />
+          {/* Main */}
+          <Main>
+            <Navbar />
+            <Wrapper>
+              <Routes>
+                <Route path="/">
+                  <Route index element={<Home />} />
+                  <Route path="video">
+                    <Route path=":id" element={<Video />} />
+                  </Route>
+                </Route>
+              </Routes>
+            </Wrapper>
+          </Main>
+        </BrowserRouter>
       </Container>
     </ThemeProvider>
   );
