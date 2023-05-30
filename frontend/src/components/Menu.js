@@ -24,6 +24,8 @@ const Container = styled.div`
   color: #f1f1f1;
   height: 100vh;
   font-size: 14px;
+  position: sticky;
+  top: 0;
 `;
 
 const Wrapper = styled.div`
@@ -46,6 +48,27 @@ const Item = styled.div`
   align-items: center;
   gap: 20px;
   cursor: pointer;
+  padding: 8px 0px;
+`;
+
+const Hr = styled.hr`
+  margin: 15px 0px;
+  border: 0.5px solid #373737;
+`;
+
+const Login = styled.div``;
+const Button = styled.button`
+  padding: 5px 15px;
+  background-color: transparent;
+  border: 1px solid #2fa6fc;
+  color: #2fa6fc;
+  border-radius: 3px;
+  font-weight: 500;
+  margin-top: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const Menu = () => {
@@ -67,6 +90,7 @@ const Menu = () => {
           <SubscriptionsOutlinedIcon />
           Subscriptions
         </Item>
+        <Hr />
         <Item>
           <VideoLibraryOutlined />
           Library
@@ -75,6 +99,15 @@ const Menu = () => {
           <HistoryOutlined />
           History
         </Item>
+        <Hr />
+        <Login>
+          Sign in to like videos, comment, and subscribe.
+          <Button>
+            <AccountCircleOutlined />
+            SIGN IN
+          </Button>
+        </Login>
+        <Hr />
         <Item>
           <LibraryMusicOutlined />
           Music
@@ -99,10 +132,8 @@ const Menu = () => {
           <LiveTvOutlined />
           Live
         </Item>
-        <Item>
-          <AccountCircleOutlined />
-          Profile
-        </Item>
+        <Hr />
+
         <Item>
           <SettingsOutlined />
           Settings
