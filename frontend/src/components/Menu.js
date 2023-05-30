@@ -20,8 +20,8 @@ import SettingsBrightnessOutlined from "@mui/icons-material/SettingsBrightnessOu
 
 const Container = styled.div`
   flex: 1;
-  background-color: #0f0f0f;
-  color: #f1f1f1;
+  background-color: ${({ theme }) => theme.bg};
+  color: ${({ theme }) => theme.text};
   height: 100vh;
   font-size: 14px;
   position: sticky;
@@ -53,7 +53,7 @@ const Item = styled.div`
 
 const Hr = styled.hr`
   margin: 15px 0px;
-  border: 0.5px solid #373737;
+  border: 0.5px solid ${({ theme }) => theme.soft};
 `;
 
 const Login = styled.div``;
@@ -71,7 +71,13 @@ const Button = styled.button`
   gap: 5px;
 `;
 
-const Menu = () => {
+const Title = styled.h2`
+  font-size: 14px;
+  font-weight: 500;
+  color: #aaaaaa;
+  margin-bottom: 20px;
+`;
+const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
@@ -108,6 +114,7 @@ const Menu = () => {
           </Button>
         </Login>
         <Hr />
+        <Title>BEST OF CLONETUBE</Title>
         <Item>
           <LibraryMusicOutlined />
           Music
@@ -146,7 +153,7 @@ const Menu = () => {
           <HelpOutlineOutlined />
           Help
         </Item>
-        <Item>
+        <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlined />
           Light Mode
         </Item>
