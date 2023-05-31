@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -43,17 +44,19 @@ const Info = styled.div`
 
 const VidCard = () => {
   return (
-    <Container>
-      <Image src="https://i3.ytimg.com/vi/DgljVIpMrbE/maxresdefault.jpg" />
-      <Details>
-        <ChannelImage src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj" />
-        <Text>
-          <Title>Test Video</Title>
-          <ChannelName>CloneTube</ChannelName>
-          <Info>100,000 views ⦁ 1 day ago</Info>
-        </Text>
-      </Details>
-    </Container>
+    <Link to="/video/test" style={{ textDecoration: "none" }}>
+      <Container>
+        <Image src="https://i3.ytimg.com/vi/DgljVIpMrbE/maxresdefault.jpg" />
+        <Details>
+          <ChannelImage src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj" />
+          <Text>
+            <Title>Test Video</Title>
+            <ChannelName>CloneTube</ChannelName>
+            <Info>100,000 views ⦁ 1 day ago</Info>
+          </Text>
+        </Details>
+      </Container>
+    </Link>
   );
 };
 

@@ -17,6 +17,7 @@ import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import FlagOutlined from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlined from "@mui/icons-material/SettingsBrightnessOutlined";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -37,6 +38,8 @@ const Logo = styled.div`
   align-items: center;
   gap: 5px;
   margin-bottom: 25px;
+  cursor: pointer;
+  font-weight: 700;
 `;
 
 const Img = styled.img`
@@ -81,9 +84,11 @@ const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
-        <Logo>
-          <Img src={CloneTube} /> CloneTube
-        </Logo>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Logo>
+            <Img src={CloneTube} /> CloneTube
+          </Logo>
+        </Link>
         <Item>
           <HomeIcon />
           Home
@@ -157,7 +162,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
         {/* When click ==> toogle darkMode */}
         <Item onClick={() => setDarkMode(!darkMode)}>
           <SettingsBrightnessOutlined />
-          Light Mode
+          {darkMode ? "Light" : "Dark"} Mode
         </Item>
       </Wrapper>
     </Container>
