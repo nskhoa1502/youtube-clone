@@ -52,6 +52,10 @@ const Item = styled.div`
   gap: 20px;
   cursor: pointer;
   padding: 8px 0px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.soft};
+  }
 `;
 
 const Hr = styled.hr`
@@ -113,10 +117,12 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <Hr />
         <Login>
           Sign in to like videos, comment, and subscribe.
-          <Button>
-            <AccountCircleOutlined />
-            SIGN IN
-          </Button>
+          <Link to="login" style={{ textDecoration: "none" }}>
+            <Button>
+              <AccountCircleOutlined />
+              SIGN IN
+            </Button>
+          </Link>
         </Login>
         <Hr />
         <Title>BEST OF CLONETUBE</Title>

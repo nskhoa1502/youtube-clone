@@ -3,20 +3,24 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 360px;
-  margin-bottom: 45px;
+  width: ${(props) => props.type !== "small" && "360px"};
+  margin-bottom: ${(props) => (props.type === "small" ? "10px" : "45px")};
   cursor: pointer;
+  display: ${(props) => props.type === "small" && "flex"};
   /* background-color: red; */
+  gap: 10px;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 202px;
+  height: ${(props) => (props.type === "small" ? "120px" : "202px")};
   background-color: #999;
+  flex: 1;
 `;
 const Details = styled.div`
   display: flex;
-  margin-top: 16px;
+  margin-top: ${(props) => (props.type === "small" ? "0px" : "16px")};
   gap: 12px;
+  flex: 1;
 `;
 
 const ChannelImage = styled.img`
@@ -24,6 +28,7 @@ const ChannelImage = styled.img`
   height: 36px;
   border-radius: 50%;
   background-color: #999;
+  display: ${(props) => props.type === "small" && "none"};
 `;
 
 const Text = styled.div``;
@@ -42,15 +47,21 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const VidCard = () => {
+const VidCard = ({ type }) => {
   return (
     <Link to="/video/test" style={{ textDecoration: "none" }}>
-      <Container>
-        <Image src="https://i3.ytimg.com/vi/DgljVIpMrbE/maxresdefault.jpg" />
-        <Details>
-          <ChannelImage src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj" />
+      <Container type={type}>
+        <Image
+          type={type}
+          src="https://i3.ytimg.com/vi/DgljVIpMrbE/maxresdefault.jpg"
+        />
+        <Details type={type}>
+          <ChannelImage
+            type={type}
+            src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj"
+          />
           <Text>
-            <Title>Test Video</Title>
+            <Title>Test Video Test Video Test Video Test Video</Title>
             <ChannelName>CloneTube</ChannelName>
             <Info>100,000 views ⦁ 1 day ago</Info>
           </Text>

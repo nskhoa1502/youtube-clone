@@ -5,6 +5,7 @@ import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
+import VidCard from "../components/VidCard";
 
 const Container = styled.div`
   display: flex;
@@ -167,7 +168,16 @@ const Video = () => {
 
         <Comments />
       </Content>
-      <Recommendation>Recommendation</Recommendation>
+      <Recommendation>
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+        <VidCard type="small" />
+      </Recommendation>
     </Container>
   );
 };
