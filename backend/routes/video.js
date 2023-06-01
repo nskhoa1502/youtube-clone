@@ -1,4 +1,40 @@
 const express = require("express");
-const router = express();
+const { verifyToken } = require("../helpers/verifyToken");
+const {
+  postAddVideo,
+  putVideo,
+  deleteVideo,
+  getVideo,
+  getTrend,
+  getRandom,
+  getSub,
+  putAddView,
+} = require("../controllers/video");
+
+const router = express.Router();
+
+// Create a video
+router.post("/", verifyToken, postAddVideo);
+
+// Update a video
+router.put("/:id", verifyToken, putVideo);
+
+// Delete a video
+router.delete("/:id", verifyToken, deleteVideo);
+
+// Get a video
+router.get("/find/:id", getVideo);
+
+// Update view counts
+router.put("/view/:id", putAddView);
+
+// Get trend videos
+router.get("/trend", getTrend);
+
+// Get random videos
+router.get("/random", getRandom);
+
+// Get sub videos
+router.get("/sub", verifyToken, getSub);
 
 module.exports = router;

@@ -8,27 +8,38 @@ const {
   putUnsubscribe,
   postLike,
   postDislike,
+  getAllUsers,
+  getLoginUser,
 } = require("../controllers/user");
+const { verifyToken } = require("../helpers/verifyToken");
 
 // Update user
-router.put("/:id", putUpdateUser);
+router.put("/:id", verifyToken, putUpdateUser);
 
 // Delete user
-router.delete("/find/:id", deleteUser);
+router.delete("/:id", verifyToken, deleteUser);
 
 // Get a user
 router.get("/find/:id", getUser);
 
-// Subscribe a user
-router.post("/sub/:id", putSubscribe);
+// Subscribe a channel
+router.put("/sub/:channelId", verifyToken, putSubscribe);
 
-// Unsubscribe a user
-router.post("/unsub/:id", putUnsubscribe);
+// Unsubscribe a channel
+router.put("/unsub/:channelId", verifyToken, putUnsubscribe);
 
 // Like a video
-router.post("/like/:videoId", postLike);
+router.post("/like/:videoId", verifyToken, postLike);
 
 // Dislike a video
-router.post("/dislike/:videoId", postDislike);
+router.post("/dislike/:videoId", verifyToken, postDislike);
+
+//==============TEST==============//
+
+// Get all users
+router.get("/", getAllUsers);
+
+// Get login user
+router.get("/login", verifyToken, getLoginUser);
 
 module.exports = router;
