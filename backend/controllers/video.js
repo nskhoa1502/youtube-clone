@@ -106,7 +106,7 @@ exports.getSub = async (req, res, next) => {
     const user = await User.findById(req.user.id);
     const subscribedChannels = user.subscribedChannels;
 
-    const list = Promise.all(
+    const list = await Promise.all(
       subscribedChannels.map((channelId) => {
         return Video.find({ userId: channelId });
       })
