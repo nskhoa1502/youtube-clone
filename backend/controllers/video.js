@@ -121,7 +121,7 @@ exports.getSub = async (req, res, next) => {
   }
 };
 
-// Get tag videos => /tag
+// Get tag videos => /tag?tags=js,c,py
 exports.getByTag = async (req, res, next) => {
   const tags = req.query.tags.split(",");
   //   console.log(tags);
@@ -135,7 +135,7 @@ exports.getByTag = async (req, res, next) => {
   }
 };
 
-// Get search videos by title => /tag
+// Get search videos by title => /search?q=abc
 exports.getSearchVideos = async (req, res, next) => {
   const query = req.query.q;
   try {
