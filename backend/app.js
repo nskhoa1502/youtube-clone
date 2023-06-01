@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const compression = require("compression");
+const helmet = require("helmet");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const videoRoutes = require("./routes/video");
@@ -21,8 +24,14 @@ const connect = () => {
     });
 };
 
-// routes
+// middlewares
+app.use(cookieParser());
 app.use(express.json());
+app.use(compression());
+app.use(helmet());
+
+// routes
+
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);

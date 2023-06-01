@@ -1,12 +1,12 @@
 const express = require("express");
-const { signup } = require("../controllers/auth");
+const { signup, postSignin } = require("../controllers/auth");
 const router = express();
 
-// Create user
-router.post("/signup", signup);
+// Create user - POST
+router.post("/signup", postSignin);
 
-// Sign in
-router.post("/signin");
+// Sign in - POST
+router.post("/signin", postSignin);
 
 // Google Auth
 router.post("/google");
