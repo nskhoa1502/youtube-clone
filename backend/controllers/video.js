@@ -103,15 +103,19 @@ exports.getRandom = async (req, res, next) => {
 // Get sub videos => /sub
 exports.getSub = async (req, res, next) => {
   try {
+    // Find user and access the Subscribed Channels
     const user = await User.findById(req.user.id);
     const subscribedChannels = user.subscribedChannels;
 
+    // Find all videos from subsribed channels (limit number later)
     const list = await Promise.all(
       subscribedChannels.map((channelId) => {
         return Video.find({ userId: channelId });
       })
     );
-    res.status(200).json(list);
+
+    // flat to prevent nested array
+    res.status(200).json(list.flat());
   } catch (err) {
     next(err);
   }
