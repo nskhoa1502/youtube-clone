@@ -94,7 +94,7 @@ exports.getRandom = async (req, res, next) => {
   try {
     // Get 40 random videos
     const videos = await Video.aggregate([{ $sample: { size: 40 } }]);
-    res.status.json(videos);
+    res.status(200).json(videos);
   } catch (err) {
     next(err);
   }
@@ -114,8 +114,37 @@ exports.getSub = async (req, res, next) => {
       })
     );
 
-    // flat to prevent nested array
-    res.status(200).json(list.flat());
+    // flat to prevent nested array, sort from latest
+    res.status(200).json(list.flat().sort((a, b) => b.createdAt - a.createdAt));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Get tag videos => /tag
+exports.getByTag = async (req, res, next) => {
+  const tags = req.query.tags.split(",");
+  //   console.log(tags);
+  try {
+    // Loop through tags array in Video model to find videos that have same tags
+    const videos = await Video.find({ tags: { $in: tags } }).limit(20);
+
+    res.status(200).json(videos);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Get search videos by title => /tag
+exports.getSearchVideos = async (req, res, next) => {
+  const query = req.query.q;
+  try {
+    // Use regex to find videos by title (case-insensitive)
+    const videos = await Video.find({
+      title: { $regex: query, $options: "i" },
+    }).limit(40);
+
+    res.status(200).json(videos);
   } catch (err) {
     next(err);
   }

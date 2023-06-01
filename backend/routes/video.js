@@ -9,6 +9,8 @@ const {
   getRandom,
   getSub,
   putAddView,
+  getByTag,
+  getSearchVideos,
 } = require("../controllers/video");
 
 const router = express.Router();
@@ -36,5 +38,11 @@ router.get("/random", getRandom);
 
 // Get sub videos
 router.get("/sub", verifyToken, getSub);
+
+// Get videos by tags
+router.get("/tag", getByTag);
+
+// Get search videos by title
+router.get("/search", getSearchVideos);
 
 module.exports = router;
