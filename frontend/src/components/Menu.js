@@ -18,6 +18,7 @@ import FlagOutlined from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlined from "@mui/icons-material/SettingsBrightnessOutlined";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   flex: 1;
@@ -85,6 +86,7 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 const Menu = ({ darkMode, setDarkMode }) => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <Container>
       <Wrapper>
@@ -118,16 +120,22 @@ const Menu = ({ darkMode, setDarkMode }) => {
           <HistoryOutlined />
           History
         </Item>
-        <Hr />
-        <Login>
-          Sign in to like videos, comment, and subscribe.
-          <Link to="login" style={{ textDecoration: "none" }}>
-            <Button>
-              <AccountCircleOutlined />
-              SIGN IN
-            </Button>
-          </Link>
-        </Login>
+
+        {/* Hide button if user is login */}
+        {!currentUser && (
+          <>
+            <Hr />
+            <Login>
+              Sign in to like videos, comment, and subscribe.
+              <Link to="login" style={{ textDecoration: "none" }}>
+                <Button>
+                  <AccountCircleOutlined />
+                  SIGN IN
+                </Button>
+              </Link>
+            </Login>
+          </>
+        )}
         <Hr />
         <Title>BEST OF CLONETUBE</Title>
         <Item>
