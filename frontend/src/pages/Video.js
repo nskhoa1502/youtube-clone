@@ -14,6 +14,7 @@ import { format } from "timeago.js";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import ThumbDown from "@mui/icons-material/ThumbDown";
 import { like, dislike, resetDislike, resetLike } from "../redux/videoSlice";
+import { subscription } from "../redux/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -106,14 +107,22 @@ const Description = styled.p`
 `;
 
 const Subscribe = styled.button`
-  background-color: #cc1a00;
+  background-color: ${({ subscribed, theme }) =>
+    subscribed ? theme.soft : "#cc1a00"};
   font-weight: 500;
-  color: #fff;
+  color: ${({ subscribed, theme }) => (subscribed ? theme.textSoft : "#fff")};
+
   border: none;
   border-radius: 4px;
   height: max-content;
   padding: 10px 20px;
   cursor: pointer;
+`;
+
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
 `;
 
 const Video = () => {
@@ -123,8 +132,8 @@ const Video = () => {
 
   const dispatch = useDispatch();
 
+  // Extract the videoId
   const path = useLocation().pathname.split("/")[2];
-  // console.log(path);
 
   const [channel, setChannel] = useState({});
 
@@ -177,20 +186,25 @@ const Video = () => {
     }
   };
 
-  console.log(currentVideo);
+  const handleSub = async () => {
+    // Check if user has already subscribed to the channel
+    // => If true -> unsubscribe
+    // => If false => subscribe
+    if (currentUser.subscribedChannels.includes(channel._id)) {
+      await axios.put(`/users/unsub/${channel._id}`);
+    } else {
+      await axios.put(`/users/sub/${channel._id}`);
+    }
+
+    // Update the state
+    dispatch(subscription(channel._id));
+  };
+
   return (
     <Container>
       <Content>
         <VideoWrapper>
-          <iframe
-            width="100%"
-            height="778"
-            src="https://www.youtube.com/embed/ES3VyWNBCKY"
-            title="Why Chris Will Soon Be A Nightmare For MrBeast | Asmongold Reacts"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
+          <VideoFrame src={currentVideo.videoUrl} />
         </VideoWrapper>
         <Title>{currentVideo?.title}</Title>
         <Details>
@@ -251,7 +265,14 @@ const Video = () => {
               <Description>{currentVideo?.desc}</Description>
             </ChannelDetails>
           </ChannelInfo>
-          <Subscribe>SUBSCRIBE</Subscribe>
+          <Subscribe
+            onClick={handleSub}
+            subscribed={currentUser.subscribedChannels.includes(channel._id)}
+          >
+            {currentUser.subscribedChannels.includes(channel._id)
+              ? "SUBSCRIBED"
+              : "SUBSCIRBE"}
+          </Subscribe>
         </Channel>
         <Hr />
 
