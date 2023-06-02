@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
@@ -6,6 +6,14 @@ import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
 import Comments from "../components/Comments";
 import VidCard from "../components/VidCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { fetchSuccess } from "../redux/videoSlice";
+import { format } from "timeago.js";
+import ThumbUp from "@mui/icons-material/ThumbUp";
+import ThumbDown from "@mui/icons-material/ThumbDown";
+import { like, dislike, resetDislike, resetLike } from "../redux/videoSlice";
 
 const Container = styled.div`
   display: flex;
@@ -109,6 +117,67 @@ const Subscribe = styled.button`
 `;
 
 const Video = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  const { currentVideo } = useSelector((state) => state.video);
+
+  const dispatch = useDispatch();
+
+  const path = useLocation().pathname.split("/")[2];
+  // console.log(path);
+
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        const channelRes = await axios.get(
+          `/users/find/${videoRes.data.userId}`
+        );
+        setChannel(channelRes.data);
+
+        dispatch(fetchSuccess(videoRes.data));
+      } catch (err) {
+        console.error(err.response.data);
+      }
+    };
+    fetchVideo();
+  }, [path, dispatch]);
+
+  const handleLike = async () => {
+    if (
+      currentUser &&
+      currentVideo &&
+      currentVideo.likes?.includes(currentUser._id)
+    ) {
+      // User has already liked the video, dispatch resetLike
+      await axios.put(`/users/reset-like/${currentVideo._id}`);
+      dispatch(resetLike(currentUser._id));
+    } else {
+      // User hasn't liked the video, dispatch like
+      await axios.put(`/users/like/${currentVideo._id}`);
+      dispatch(like(currentUser._id));
+    }
+  };
+
+  const handleDislike = async () => {
+    if (
+      currentUser &&
+      currentVideo &&
+      currentVideo.dislikes?.includes(currentUser._id)
+    ) {
+      // User has already disliked the video, dispatch resetDislike
+      await axios.put(`/users/reset-like/${currentVideo._id}`);
+      dispatch(resetDislike(currentUser._id));
+    } else {
+      // User hasn't disliked the video, dispatch dislike
+      await axios.put(`/users/dislike/${currentVideo._id}`);
+      dispatch(dislike(currentUser._id));
+    }
+  };
+
+  console.log(currentVideo);
   return (
     <Container>
       <Content>
@@ -118,24 +187,50 @@ const Video = () => {
             height="778"
             src="https://www.youtube.com/embed/ES3VyWNBCKY"
             title="Why Chris Will Soon Be A Nightmare For MrBeast | Asmongold Reacts"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </VideoWrapper>
-        <Title>
-          Why Chris Will Soon Be A Nightmare For MrBeast | Asmongold Reacts
-        </Title>
+        <Title>{currentVideo?.title}</Title>
         <Details>
-          <Info>424,106 views ⦁ Apr 14, 2023</Info>
+          <Info>
+            {currentVideo?.views} views ⦁ {format(currentVideo?.createdAt)}
+          </Info>
           <Buttons>
-            <Button>
-              <ThumbUpOutlinedIcon />
-              1234
-            </Button>
-            <Button>
-              <ThumbDownOutlinedIcon /> Dislike
-            </Button>
+            {currentUser && currentVideo && (
+              <>
+                {" "}
+                <Button onClick={handleLike}>
+                  {currentVideo.likes?.includes(currentUser._id) ? (
+                    <ThumbUp />
+                  ) : (
+                    <ThumbUpOutlinedIcon />
+                  )}
+                  {currentVideo.likes?.length}
+                </Button>
+                <Button onClick={handleDislike}>
+                  {currentVideo.dislikes?.includes(currentUser._id) ? (
+                    <ThumbDown />
+                  ) : (
+                    <ThumbDownOutlinedIcon />
+                  )}
+                  {currentVideo.dislikes?.length}
+                </Button>
+              </>
+            )}
+            {!currentUser && currentVideo && (
+              <>
+                <Button>
+                  <ThumbUpOutlinedIcon />
+                  {currentVideo.likes?.length}
+                </Button>
+                <Button>
+                  <ThumbDownOutlinedIcon />
+                  {currentVideo.dislikes?.length}
+                </Button>
+              </>
+            )}
             <Button>
               <ReplyOutlinedIcon /> Share
             </Button>
@@ -147,19 +242,13 @@ const Video = () => {
         <Hr />
         <Channel>
           <ChannelInfo>
-            <Image src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj" />
+            <Image src={channel?.img} />
             <ChannelDetails>
-              <ChannelName>CloneTube</ChannelName>
-              <ChannelCounter>200K Subscribers</ChannelCounter>
-              <Description>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </Description>
+              <ChannelName>{channel?.name}</ChannelName>
+              <ChannelCounter>
+                {channel?.subscribers} Subscribers
+              </ChannelCounter>
+              <Description>{currentVideo?.desc}</Description>
             </ChannelDetails>
           </ChannelInfo>
           <Subscribe>SUBSCRIBE</Subscribe>
@@ -168,7 +257,7 @@ const Video = () => {
 
         <Comments />
       </Content>
-      <Recommendation>
+      {/* <Recommendation>
         <VidCard type="small" />
         <VidCard type="small" />
         <VidCard type="small" />
@@ -177,7 +266,7 @@ const Video = () => {
         <VidCard type="small" />
         <VidCard type="small" />
         <VidCard type="small" />
-      </Recommendation>
+      </Recommendation> */}
     </Container>
   );
 };

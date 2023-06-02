@@ -67,7 +67,7 @@ const VidCard = ({ type, video }) => {
     fetchChannel();
   }, [video.userId]);
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
+    <Link to={`/video/${video._id}`} style={{ textDecoration: "none" }}>
       <Container type={type}>
         {/* Video Thumbnail */}
         <Image type={type} src={video.imgUrl} />
