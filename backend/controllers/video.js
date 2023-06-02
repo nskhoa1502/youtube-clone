@@ -60,7 +60,7 @@ exports.deleteVideo = async (req, res, next) => {
 exports.getVideo = async (req, res, next) => {
   try {
     const video = await Video.findById(req.params.id);
-    res.status.json(video);
+    res.status(200).json(video);
   } catch (err) {
     next(err);
   }

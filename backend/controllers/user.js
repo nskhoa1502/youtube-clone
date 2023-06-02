@@ -1,5 +1,6 @@
 const { createError } = require("../utils/error");
 const User = require("../models/User");
+const Video = require("../models/Video");
 
 // Update user ==> /:id
 exports.putUpdateUser = async (req, res, next) => {
@@ -49,9 +50,9 @@ exports.getUser = async (req, res, next) => {
 // subscribe ==> /:channelId
 exports.putSubscribe = async (req, res, next) => {
   try {
-    // Find the login user and push channelId
+    // Find the login user and addToSet (only 1 userId) channelId
     await User.findByIdAndUpdate(req.user.id, {
-      $push: { subscribedChannels: req.params.channelId },
+      $addToSet: { subscribedChannels: req.params.channelId },
     });
 
     // Find the channel and increment the subscriber count by 1
@@ -65,6 +66,7 @@ exports.putSubscribe = async (req, res, next) => {
   }
 };
 
+// unsubscribe ==> /:channelId
 exports.putUnsubscribe = async (req, res, next) => {
   try {
     // Find the login user and remove channelId
@@ -83,15 +85,51 @@ exports.putUnsubscribe = async (req, res, next) => {
   }
 };
 
-exports.postLike = async (req, res, next) => {
+// like video => /like/:videoId
+exports.putLike = async (req, res, next) => {
   try {
+    const id = req.user.id;
+    const videoId = req.params.videoId;
+
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { likes: id },
+      $pull: { dislikes: id },
+    });
+
+    res.status(+200).json("The video has been liked");
   } catch (err) {
     next(err);
   }
 };
 
-exports.postDislike = async (req, res, next) => {
+// dislike video => /dislike/:videoId
+exports.putDislike = async (req, res, next) => {
   try {
+    const id = req.user.id;
+    const videoId = req.params.videoId;
+
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { dislikes: id },
+      $pull: { likes: id },
+    });
+
+    res.status(+200).json("The video has been disliked");
+  } catch (err) {
+    next(err);
+  }
+};
+
+// reset like video => /reset-like/:videoId
+exports.putResetLike = async (req, res, next) => {
+  try {
+    const id = req.user.id;
+    const videoId = req.params.videoId;
+
+    await Video.findByIdAndUpdate(videoId, {
+      $pull: { likes: id, dislikes: id },
+    });
+
+    res.status(+200).json("Remove like or dislike");
   } catch (err) {
     next(err);
   }

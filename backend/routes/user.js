@@ -6,12 +6,15 @@ const {
   getUser,
   putSubscribe,
   putUnsubscribe,
-  postLike,
-  postDislike,
   getAllUsers,
   getLoginUser,
+  putDislike,
+  putLike,
+  putResetLike,
 } = require("../controllers/user");
 const { verifyToken } = require("../helpers/verifyToken");
+
+// http://localhost:8080/api/users/
 
 // Update user
 router.put("/:id", verifyToken, putUpdateUser);
@@ -29,10 +32,13 @@ router.put("/sub/:channelId", verifyToken, putSubscribe);
 router.put("/unsub/:channelId", verifyToken, putUnsubscribe);
 
 // Like a video
-router.post("/like/:videoId", verifyToken, postLike);
+router.put("/like/:videoId", verifyToken, putLike);
 
 // Dislike a video
-router.post("/dislike/:videoId", verifyToken, postDislike);
+router.put("/dislike/:videoId", verifyToken, putDislike);
+
+// reset like of a video
+router.put("/reset-like/:videoId", verifyToken, putResetLike);
 
 //==============TEST==============//
 

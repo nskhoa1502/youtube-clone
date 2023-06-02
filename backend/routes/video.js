@@ -15,6 +15,8 @@ const {
 
 const router = express.Router();
 
+// http://localhost:8080/api/videos/
+
 // Create a video
 router.post("/", verifyToken, postAddVideo);
 

@@ -7,6 +7,8 @@ const {
 } = require("../controllers/comment");
 const router = express();
 
+// http://localhost:8080/api/comments/
+
 // Add comment
 router.post("/", verifyToken, postAddComment);
 

@@ -2,6 +2,8 @@ const express = require("express");
 const { postSignin, postSignup } = require("../controllers/auth");
 const router = express();
 
+// http://localhost:8080/api/auth/
+
 // Create user - POST
 router.post("/signup", postSignup);
 
