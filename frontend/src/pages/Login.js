@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 
 import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const Container = styled.div`
   display: flex;
@@ -100,6 +102,25 @@ const Login = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    dispatch(loginStart());
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        axios
+          .post("/auth/google", {
+            name: result.user.displayName,
+            email: result.user.email,
+            img: result.user.photoURL,
+          })
+          .then((res) => {
+            dispatch(loginSuccess(res.data));
+          });
+      })
+      .catch((err) => {
+        dispatch(loginFailure());
+      });
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -118,6 +139,9 @@ const Login = () => {
         ></Input>
         <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
+
+        {/* GOOGLE SIGNIN */}
+        <Button onClick={signInWithGoogle}>Sign in with Google</Button>
 
         {/* REGISTER SECTION */}
         <Input

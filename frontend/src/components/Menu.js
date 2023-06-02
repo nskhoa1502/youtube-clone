@@ -17,8 +17,12 @@ import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import FlagOutlined from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlined from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlined from "@mui/icons-material/SettingsBrightnessOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { persistor } from "../redux/store";
+import { logout } from "../redux/userSlice";
 
 const Container = styled.div`
   flex: 1;
@@ -87,6 +91,28 @@ const Title = styled.h2`
 `;
 const Menu = ({ darkMode, setDarkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      // Logout => clear cookie
+      await axios.post("/auth/logout");
+
+      // REMOVE THE PERSISTOR
+      // persistor.pause() => Pause the persistence process, make localStorage to be eligible for change
+      // persistor.flush() => kill any pending state changes
+      // persistor.purge() => remove any persisted state from storage
+
+      persistor.pause();
+      await persistor.flush();
+      await persistor.purge();
+
+      // Logout => clear user data from redux store
+      dispatch(logout());
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Container>
       <Wrapper>
@@ -164,6 +190,10 @@ const Menu = ({ darkMode, setDarkMode }) => {
         </Item>
         <Hr />
 
+        <Item onClick={handleLogout}>
+          <LogoutIcon />
+          Logout
+        </Item>
         <Item>
           <SettingsOutlined />
           Settings

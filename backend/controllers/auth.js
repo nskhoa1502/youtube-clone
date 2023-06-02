@@ -31,7 +31,9 @@ exports.postSignin = async (req, res, next) => {
     if (!isCorrect) return next(createError(400, "Wrong credentials!"));
 
     // Sign access token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
     const { password, ...others } = user._doc;
 
     res
@@ -40,6 +42,60 @@ exports.postSignin = async (req, res, next) => {
       })
       .status(200)
       .json(others);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Google Auth => /google
+exports.postGoogleAuth = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    // Find user in database
+    // 1. True -> Create access token and send back user info
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      user._doc;
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(user._doc);
+    } else {
+      const newUser = new User({ ...req.body, fromGoogle: true });
+      const savedUser = await newUser.save();
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json(savedUser);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Logout -> /logout
+
+exports.postLogout = (req, res, next) => {
+  try {
+    // Clear the access_token cookie by setting it to an empty string and expiring it immediately
+    res
+      .cookie("access_token", "", {
+        httpOnly: true,
+        expires: new Date(0),
+      })
+      .status(200)
+      .json({ message: "Logged out successfully" });
   } catch (err) {
     next(err);
   }
