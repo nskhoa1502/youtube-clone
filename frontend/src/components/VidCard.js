@@ -1,6 +1,8 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { format } from "timeago.js";
 
 const Container = styled.div`
   width: ${(props) => props.type !== "small" && "360px"};
@@ -47,25 +49,43 @@ const Info = styled.div`
   color: ${({ theme }) => theme.textSoft};
 `;
 
-const VidCard = ({ type }) => {
+const VidCard = ({ type, video }) => {
+  const [channel, setChannel] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchChannel = async () => {
+      try {
+        const res = await axios.get(`/users/find/${video.userId}`);
+        console.log(res.data);
+        setChannel(res.data);
+      } catch (err) {
+        console.log(err.response.data);
+        setError(err.response.data);
+      }
+    };
+    fetchChannel();
+  }, [video.userId]);
   return (
     <Link to="/video/test" style={{ textDecoration: "none" }}>
       <Container type={type}>
-        <Image
-          type={type}
-          src="https://i3.ytimg.com/vi/DgljVIpMrbE/maxresdefault.jpg"
-        />
+        {/* Video Thumbnail */}
+        <Image type={type} src={video.imgUrl} />
         <Details type={type}>
-          <ChannelImage
-            type={type}
-            src="https://yt3.ggpht.com/SMHmQVpzLs0uL7728eQfYp4auW_-Gy5eWjF1knpd11TSu68Y_0C1RFzP8G_HzUL6wXSjwPvZ=s68-c-k-c0x00ffffff-no-rj"
-          />
+          {/* Channel avatar */}
+          <ChannelImage type={type} src={channel.img} />
           <Text>
-            <Title>Test Video Test Video Test Video Test Video</Title>
-            <ChannelName>CloneTube</ChannelName>
-            <Info>100,000 views ⦁ 1 day ago</Info>
+            {/* Video name */}
+            <Title>{video.title}</Title>
+            {/* Channel name */}
+            <ChannelName>{channel.name}</ChannelName>
+            {/* Views - times */}
+            <Info>
+              {video.views} views ⦁ {format(video.createdAt)}{" "}
+            </Info>
           </Text>
         </Details>
+        {error && <div style={{ color: "red" }}>{error}</div>}
       </Container>
     </Link>
   );

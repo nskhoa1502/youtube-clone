@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 
@@ -15,9 +16,12 @@ const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: ${({ theme }) => theme.bgLighter};
-  border: 1px solid ${({ theme }) => theme.soft};
+  border: 1px solid ${({ theme }) => theme.textSoft};
   padding: 20px 50px;
   gap: 10px;
+  box-shadow: 1px 1px 39px -19px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 1px 1px 39px -19px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 1px 1px 39px -19px rgba(0, 0, 0, 0.52);
 `;
 
 const Title = styled.h1`
@@ -30,11 +34,23 @@ const SubTitle = styled.h2`
 `;
 
 const Input = styled.input`
-  border: 1px solid ${({ theme }) => theme.soft};
+  border: 1px solid ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.bgLighter};
+  color: ${({ theme }) => theme.textSoft};
   border-radius: 3px;
   padding: 10px;
   background-color: transparent;
   width: 100%;
+
+  &:focus {
+    background-color: ${({ theme }) => theme.text};
+    color: ${({ theme }) => theme.bgLighter};
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.text};
+    color: ${({ theme }) => theme.bgLighter};
+  }
 `;
 
 const Button = styled.button`
@@ -63,18 +79,57 @@ const Link = styled.span`
 `;
 
 const Login = () => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({
+    loginErrors: {},
+    registerErrors: {},
+  });
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/auth/signin", { name, password });
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
+        {/* LOGIN SECTION */}
         <Title>Sign in</Title>
         <SubTitle>to continue to CloneTube</SubTitle>
-        <Input placeholder="username"></Input>
-        <Input placeholder="password" type="password"></Input>
-        <Button>Sign in</Button>
+        <Input
+          placeholder="username"
+          type="text"
+          onChange={(e) => setName(e.target.value)}
+        ></Input>
+        <Input
+          placeholder="password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        ></Input>
+        <Button onClick={handleLogin}>Sign in</Button>
         <Title>or</Title>
-        <Input placeholder="username"></Input>
-        <Input placeholder="email"></Input>
-        <Input placeholder="password" type="password"></Input>
+
+        {/* REGISTER SECTION */}
+        <Input
+          placeholder="username"
+          onChange={(e) => setName(e.target.value)}
+        ></Input>
+        <Input
+          placeholder="email"
+          onChange={(e) => setEmail(e.target.value)}
+        ></Input>
+        <Input
+          placeholder="password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        ></Input>
         <Button>Sign up</Button>
       </Wrapper>
       <More>
