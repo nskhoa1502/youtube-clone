@@ -276,7 +276,7 @@ const Video = () => {
         </Channel>
         <Hr />
 
-        <Comments />
+        <Comments videoId={currentVideo._id} />
       </Content>
       {/* <Recommendation>
         <VidCard type="small" />

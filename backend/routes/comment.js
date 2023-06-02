@@ -16,6 +16,6 @@ router.post("/", verifyToken, postAddComment);
 router.delete("/:commentId", verifyToken, deleteComment);
 
 // Get all comments
-router.get("/:videoId", verifyToken, getComments);
+router.get("/:videoId", getComments);
 
 module.exports = router;
