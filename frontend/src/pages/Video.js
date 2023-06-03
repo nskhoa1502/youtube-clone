@@ -150,6 +150,18 @@ const Video = () => {
     fetchVideo();
   }, [path, dispatch]);
 
+  useEffect(() => {
+    const incrementViewCount = async () => {
+      try {
+        await axios.put(`/videos/view/${currentVideo?._id}`);
+      } catch (error) {
+        console.error(error.response.data);
+      }
+    };
+
+    incrementViewCount();
+  }, [currentVideo?._id]);
+
   const handleLike = async () => {
     if (
       currentUser &&
