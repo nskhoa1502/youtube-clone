@@ -143,6 +143,7 @@ const Video = () => {
         );
         setChannel(channelRes.data);
         dispatch(fetchSuccess(videoRes.data));
+        console.log(videoRes.data);
       } catch (err) {
         console.error(err.response.data);
       }
@@ -150,17 +151,17 @@ const Video = () => {
     fetchVideo();
   }, [path, dispatch]);
 
-  useEffect(() => {
-    const incrementViewCount = async () => {
-      try {
-        await axios.put(`/videos/view/${currentVideo?._id}`);
-      } catch (error) {
-        console.error(error.response.data);
-      }
-    };
+  // useEffect(() => {
+  //   const incrementViewCount = async () => {
+  //     try {
+  //       await axios.put(`/videos/view/${currentVideo?._id}`);
+  //     } catch (error) {
+  //       console.error(error.response.data);
+  //     }
+  //   };
 
-    incrementViewCount();
-  }, [currentVideo?._id]);
+  //   incrementViewCount();
+  // }, [currentVideo?._id]);
 
   const handleLike = async () => {
     if (
@@ -214,8 +215,7 @@ const Video = () => {
         <Title>{currentVideo?.title}</Title>
         <Details>
           <Info>
-            {addCommas(currentVideo?.views)} views ⦁{" "}
-            {format(currentVideo?.createdAt)}
+            {currentVideo?.views} views ⦁ {format(currentVideo?.createdAt)}
           </Info>
           <Buttons>
             {currentUser && currentVideo && (
@@ -280,9 +280,9 @@ const Video = () => {
           </Subscribe>
         </Channel>
         <Hr />
-        <Comments videoId={currentVideo._id} />
+        <Comments videoId={currentVideo?._id} />
       </Content>
-      <Recommendation tags={currentVideo.tags} />
+      <Recommendation tags={currentVideo?.tags} />
     </Container>
   );
 };

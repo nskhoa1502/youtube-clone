@@ -4,7 +4,6 @@ const Video = require("../models/Video");
 
 // Update user ==> /:id
 exports.putUpdateUser = async (req, res, next) => {
-  //   console.log(req.user);
   if (req.params.id === req.user.id) {
     try {
       const updatedUser = await User.findByIdAndUpdate(
@@ -25,7 +24,6 @@ exports.putUpdateUser = async (req, res, next) => {
 
 // Delete user ==> /:id
 exports.deleteUser = async (req, res, next) => {
-  //   console.log(req.user);
   if (req.params.id === req.user.id) {
     try {
       await User.findByIdAndDelete(req.params.id);

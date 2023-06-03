@@ -5,7 +5,7 @@ const { createError } = require("../utils/error");
 const jwt = require("jsonwebtoken");
 
 exports.postSignup = async (req, res, next) => {
-  // console.log(req.body);
+
   try {
     // Hash password
     const salt = bcrypt.genSaltSync(10);
@@ -19,7 +19,7 @@ exports.postSignup = async (req, res, next) => {
   }
 };
 exports.postSignin = async (req, res, next) => {
-  // console.log(req.body);
+
   try {
     // Find user in database
     const user = await User.findOne({ name: req.body.name });

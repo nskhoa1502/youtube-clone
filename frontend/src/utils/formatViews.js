@@ -9,6 +9,6 @@ export const formatViews = (num) => {
   return num.toString();
 };
 
-export const addCommas = (num) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
+// export const addCommas = (num) => {
+//   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// };

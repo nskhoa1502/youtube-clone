@@ -4,7 +4,6 @@ const { createError } = require("../utils/error");
 
 // Create a video ==> /
 exports.postAddVideo = async (req, res, next) => {
-  console.log("this route has been called");
   try {
     const newVideo = new Video({ userId: req.user.id, ...req.body });
     const savedVideo = await newVideo.save();
@@ -126,7 +125,7 @@ exports.getSub = async (req, res, next) => {
 // Get tag videos => /tag?tags=js,c,py
 exports.getByTag = async (req, res, next) => {
   const tags = req.query.tags.split(",");
-  //   console.log(tags);
+
   try {
     // Loop through tags array in Video model to find videos that have same tags
     const videos = await Video.find({ tags: { $in: tags } }).limit(20);

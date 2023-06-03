@@ -33,7 +33,6 @@ exports.deleteComment = async (req, res, next) => {
 
 // Get all comments => /:videoId
 exports.getComments = async (req, res, next) => {
-  // console.log("this route is called");
   try {
     const comments = await Comment.find({ videoId: req.params.videoId });
     res.status(200).json(comments);
