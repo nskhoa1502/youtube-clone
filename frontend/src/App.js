@@ -2,12 +2,12 @@ import styled, { ThemeProvider } from "styled-components";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import { darkTheme, lightTheme } from "./utils/Theme";
-import { light } from "@mui/material/styles/createPalette";
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Video from "./pages/Video";
 import Login from "./pages/Login";
+import Search from "./pages/Search";
 
 const Container = styled.div`
   display: flex;
@@ -42,6 +42,7 @@ function App() {
                   {/* Login => Display trends and subscribed videos */}
                   <Route path="trends" element={<Home type="trend" />} />
                   <Route path="subscriptions" element={<Home type="sub" />} />
+                  <Route path="search" element={<Search />} />
 
                   {/* Login */}
                   <Route path="login" element={<Login />} />

@@ -1,6 +1,0 @@
-{
-  "success": false,
-  "status": 500,
-  "message": "Video validation failed: imgUrl: Path `imgUrl` is required.",
-  "stack": "ValidationError: Video validation failed: imgUrl: Path `imgUrl` is required.\n    at Document.invalidate (C:\\Users\\Administrator\\Desktop\\Projects\\Youtube\\backend\\node_modules\\mongoose\\lib\\document.js:3147:32)\n    at C:\\Users\\Administrator\\Desktop\\Projects\\Youtube\\backend\\node_modules\\mongoose\\lib\\document.js:2940:17\n    at C:\\Users\\Administrator\\Desktop\\Projects\\Youtube\\backend\\node_modules\\mongoose\\lib\\schematype.js:1352:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)"
-}

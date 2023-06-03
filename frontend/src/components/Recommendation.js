@@ -1,37 +1,32 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import VidCard from "../components/VidCard";
-import axios from "axios";
+import VidCard from "./VidCard";
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex: 2;
 `;
 
-const Home = ({ type }) => {
+const Recommendation = ({ tags }) => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`/videos/${type}`);
-
+        const res = await axios.get(`/videos/tag?tags=${tags.join(",")}`);
         setVideos(res.data);
-      } catch (err) {
-        console.error(err.response.data);
-      }
+      } catch (err) {}
     };
     fetchVideos();
-  }, [type]);
-
+  }, [tags]);
   return (
     <Container>
+      {!videos && <div>No Video</div>}
       {videos.map((video) => (
-        <VidCard key={video._id} video={video} />
+        <VidCard key={video._id} video={video} type="small" />
       ))}
     </Container>
   );
 };
 
-export default Home;
+export default Recommendation;

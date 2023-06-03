@@ -1,30 +1,28 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import VidCard from "../components/VidCard";
-import axios from "axios";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 10px;
 `;
 
-const Home = ({ type }) => {
+const Search = () => {
   const [videos, setVideos] = useState([]);
+  const query = useLocation().search;
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const res = await axios.get(`/videos/${type}`);
-
-        setVideos(res.data);
-      } catch (err) {
-        console.error(err.response.data);
-      }
+    const fetchVideo = async () => {
+      const res = await axios.get(`videos/search${query}`);
+      setVideos(res.data);
+      //   console.log(res.data);
     };
-    fetchVideos();
-  }, [type]);
 
+    fetchVideo();
+  }, [query]);
   return (
     <Container>
       {videos.map((video) => (
@@ -34,4 +32,4 @@ const Home = ({ type }) => {
   );
 };
 
-export default Home;
+export default Search;

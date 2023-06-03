@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { format } from "timeago.js";
+import { formatViews } from "../utils/formatViews";
 
 const Container = styled.div`
   width: ${(props) => props.type !== "small" && "360px"};
@@ -57,10 +58,10 @@ const VidCard = ({ type, video }) => {
     const fetchChannel = async () => {
       try {
         const res = await axios.get(`/users/find/${video.userId}`);
-        console.log(res.data);
+
         setChannel(res.data);
       } catch (err) {
-        console.log(err.response.data);
+        console.error(err.response.data);
         setError(err.response.data);
       }
     };
@@ -81,7 +82,7 @@ const VidCard = ({ type, video }) => {
             <ChannelName>{channel.name}</ChannelName>
             {/* Views - times */}
             <Info>
-              {video.views} views ⦁ {format(video.createdAt)}{" "}
+              {formatViews(video.views)} views ⦁ {format(video.createdAt)}{" "}
             </Info>
           </Text>
         </Details>

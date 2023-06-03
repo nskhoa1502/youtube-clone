@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import VideoCallOutLinedIcon from "@mui/icons-material/VideoCallOutlined";
 import Upload from "./Upload";
@@ -37,8 +37,13 @@ const Search = styled.div`
 `;
 const Input = styled.input`
   padding: 5px 5px;
+  width: 80%;
   border: none;
   background-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
 `;
 const Button = styled.button`
   padding: 5px 15px;
@@ -70,7 +75,9 @@ const Avatar = styled.img`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
   const { currentUser } = useSelector((state) => state.user);
 
   return (
@@ -78,8 +85,11 @@ const Navbar = () => {
       <Container>
         <Wrapper>
           <Search>
-            <Input placeholder="Search" />
-            <SearchOutlinedIcon />
+            <Input
+              placeholder="Search"
+              onChange={(e) => setQ(e.target.value)}
+            />
+            <SearchOutlinedIcon onClick={() => navigate(`/search?q=${q}`)} />
           </Search>
 
           {/* Adjust navbar if user is login */}
