@@ -1,8 +1,10 @@
 const Video = require("../models/Video");
 const User = require("../models/User");
+const { createError } = require("../utils/error");
 
 // Create a video ==> /
 exports.postAddVideo = async (req, res, next) => {
+  console.log("this route has been called");
   try {
     const newVideo = new Video({ userId: req.user.id, ...req.body });
     const savedVideo = await newVideo.save();
